@@ -1,6 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
-
+const ModuleFederationPlugin =
+  require("webpack").container.ModuleFederationPlugin;
 const mode = process.env.NODE_ENV || "production";
 
 module.exports = {
@@ -14,35 +14,37 @@ module.exports = {
     minimize: mode === "production",
   },
   resolve: {
-    extensions: [".jsx", ".js", ".json"],
+    extensions: [".ts", ".tsx", ".jsx", ".js", ".json"],
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        loader: require.resolve("babel-loader"),
+        test: /\.tsx?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
         options: {
-          presets: [require.resolve("@babel/preset-react")],
+          presets: ["@babel/preset-react", "@babel/preset-typescript"],
         },
       },
     ],
   },
 
   plugins: [
+    new HtmlWebpackPlugin({
+      template: "./public/index.html",
+    }),
+
     new ModuleFederationPlugin({
       name: "application_b",
       library: { type: "var", name: "application_b" },
       filename: "remoteEntry.js",
       exposes: {
-        SayHelloFromB: "./src/app",
+        "./SayHelloFromB": "./src/app",
       },
       remotes: {
         application_a: "application_a",
       },
       shared: ["react", "react-dom"],
-    }),
-    new HtmlWebpackPlugin({
-      template: "./public/index.html",
     }),
   ],
 };
