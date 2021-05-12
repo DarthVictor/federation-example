@@ -1,15 +1,17 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ModuleFederationPlugin =
-  require("webpack").container.ModuleFederationPlugin;
+const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const mode = process.env.NODE_ENV || "production";
 
 module.exports = {
   mode,
+  target: "web",
   entry: "./src/index",
   output: {
-    publicPath: "http://localhost:3001/",
+    path: path.resolve(__dirname, "./dist"),
+    filename: "index.js",
+    libraryTarget: "commonjs",
+    globalObject: "this",
   },
   devtool: "source-map",
   optimization: {
@@ -22,13 +24,14 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
+        exclude: /node_modules/,
         use: [
           { loader: "babel-loader" },
           {
             loader: "@linaria/webpack-loader",
             options: {
               sourceMap: mode !== "production",
-              classNameSlug: (hash) => `${hash}1`,
+              classNameSlug: (hash) => `${hash}c`,
             },
           },
         ],
@@ -51,24 +54,9 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({ template: "./public/index.html" }),
-
     new MiniCssExtractPlugin({
-      filename: "styles-a.css",
+      filename: "styles-common.css",
       ignoreOrder: true,
-    }),
-
-    new ModuleFederationPlugin({
-      name: "application_a",
-      library: { type: "var", name: "application_a" },
-      filename: "remoteEntry.js",
-      exposes: {
-        "./routes": "./src/app/routes",
-      },
-      remotes: {
-        application_b: "application_b",
-      },
-      shared: ["react", "react-dom"],
     }),
   ],
 };

@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "lib": ["dom", "ESNext"],
+    "strict": true,
+    "jsx": "react",
+    "declaration": true,
+    "outDir": "dist",
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true
+  },
+  "include": ["./src/index.ts"]
+}

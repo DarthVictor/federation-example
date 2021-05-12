@@ -1,11 +1,16 @@
 {
-  "name": "application-a",
+  "name": "application-common",
   "version": "1.0.0",
   "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "start": "serve dist -p 3001",
-    "build": "webpack --mode production",
-    "dev": "concurrently \"webpack --watch\" \"serve dist -p 3001\""
+    "start": "echo \"no start option for common\"",
+    "build": "concurrently \"tsc\" \"webpack --mode production\"",
+    "dev": "concurrently \"tsc --watch\" \"webpack --watch\""
   },
   "dependencies": {
     "react": "^16.14.0",
@@ -18,8 +23,7 @@
     "react-redux": "^7.2.4",
     "typed-redux-saga": "^1.1.3",
     "redux-saga": "^1.1.3",
-    "@reduxjs/toolkit": "^1.5.1",
-    "application-common": "1.0.0"
+    "@reduxjs/toolkit": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
@@ -37,7 +41,6 @@
     "babel-loader": "^8.2.2",
     "concurrently": "^6.1.0",
     "css-loader": "^5.2.4",
-    "html-webpack-plugin": "^5.3.1",
     "linaria": "^2.1.0",
     "mini-css-extract-plugin": "^1.6.0",
     "serve": "^11.3.2",

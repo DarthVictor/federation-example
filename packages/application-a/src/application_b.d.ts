@@ -1,5 +1,6 @@
-declare module "application_b/SayHelloFromB" {
-  const SayHelloFromB: React.ComponentType;
+declare module "application_b/routes" {
+  import { AppProps } from "application-common";
+  export const routes: AppProps["routes"];
 
-  export default SayHelloFromB;
+  export default routes;
 }
